@@ -261,16 +261,11 @@ def rd3_question_7(df):
 def to_excel(df):
     output = BytesIO()
 
-    writer = pd.ExcelWriter(output, engine="xlsxwriter")
-
-    df.to_excel(writer, index=False, sheet_name="Sheet1")
-
-    worksheet = writer.sheets["Sheet1"]
-
-    worksheet.set_column("A:A", None)
-
-    writer.save()
+    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+        df.to_excel(writer, index=False, sheet_name="Sheet1")
+        worksheet = writer.sheets["Sheet1"]
+        worksheet.set_column("A:A", None)
 
     processed_data = output.getvalue()
-
     return processed_data
+
