@@ -1,4 +1,5 @@
-# Git Analytics Project
+<<<<<<< HEAD
+# Git and Analytics Project
 
 ## 🇧🇷 Português
 
