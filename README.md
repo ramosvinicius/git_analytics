@@ -3,9 +3,9 @@
 
 ## 🇧🇷 Português
 
-Este repositório foi criado com o objetivo de **ensinar e demonstrar o uso básico do Git** utilizando um projeto real de dados como exemplo, dentro do contexto da **Comunidade DS**.
+Este repositório foi criado com o objetivo de ensinar e demonstrar alguns comandos no Git, utilizando um projeto real de dados como exemplo.
 
-O projeto serve como um **esqueleto/base** para mostrar, na prática, como o Git pode ser utilizado ao longo do desenvolvimento de um projeto de dados — desde a criação do repositório até ajustes finais e deploy.
+O projeto serve como uma  para mostrar, na prática, como o Git pode ser utilizado ao longo do desenvolvimento de um projeto de dados — desde a criação do repositório até ajustes finais e deploy.
 
 ---
 
@@ -23,11 +23,11 @@ Os principais objetivos deste repositório são:
 
 - Ensinar os **conceitos fundamentais de Git**
 - Demonstrar **boas práticas de commits**
-- Mostrar como estruturar um **projeto simples de dados**
+- Mostrar como estruturar um **projeto de dados**
 - Servir como **material de apoio didático**
 - Facilitar o aprendizado de Git de forma prática
 
-O foco do projeto **não é complexidade técnica**, mas sim o **processo de versionamento e organização do código**.
+O foco do projeto é mostrar como é o **processo de versionamento e organização do código**.
 
 ---
 
@@ -48,8 +48,9 @@ git_analytics/
 │       └── bikes_completed.csv
 │
 └── .devcontainer/          # Configuração de ambiente de desenvolvimento
+```
 
-🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 Python 3.10
 
@@ -61,7 +62,7 @@ Plotly
 
 Git e GitHub
 
-▶️ Como Executar o Projeto Localmente
+## ▶️ Como Executar o Projeto Localmente
 
 Clone o repositório:
 
@@ -84,7 +85,7 @@ Execute a aplicação:
 
 streamlit run app.py
 
-📘 Conceitos de Git Abordados
+## 📘 Conceitos de Git Abordados
 
 Este repositório pode ser utilizado para ensinar e praticar:
 
@@ -104,33 +105,19 @@ Reescrita de histórico (git rebase)
 
 Uso do GitHub no dia a dia
 
-👥 Público-Alvo
+## 👥 Público-Alvo
 
-Estudantes de Data Science
+Estudantes de Análise de Dados
 
-Analistas de Dados
+Analistas de Dados que buscando conteúdo sobre Git
 
 Pessoas iniciantes em Git
 
-Qualquer pessoa que queira aprender Git na prática
-
-🚀 Próximos Passos
-
-Possíveis evoluções futuras para este projeto:
-
-Exercícios práticos de Git
-
-Exemplos de erros comuns e como corrigi-los
-
-Demonstração de branches e pull requests
-
-Expansão da documentação didática
-
-📄 Licença
+## 📄 Licença
 
 Este projeto utiliza a licença MIT.
 
-👤 Autor
+## 👤 Autor
 
 Vinícius Ramos
 
@@ -138,19 +125,19 @@ GitHub: https://github.com/ramosvinicius
 
 
 
-🇺🇸 English
+## 🇺🇸 English
 
 This repository was created as a teaching project to demonstrate the basic usage of Git using a real data project as an example, within the context of Comunidade DS.
 
 The project serves as a base/skeleton to show how Git can be applied throughout the lifecycle of a data project, focusing on version control practices rather than technical complexity.
 
-📊 Dashboard
+## 📊 Dashboard
 
-You can access the dashboard here:
+You can access the dashboard here: https://github.com/ramosvinicius
 
-👉 Git Analytics Dashboard
+👉 Git and Analytics Dashboard
 
-🎯 Project Purpose
+## 🎯 Project Purpose
 
 The main goals of this project are:
 
@@ -164,7 +151,7 @@ Serve as a didactic reference
 
 Help beginners learn Git in a practical way
 
-🛠️ Technologies
+## 🛠️ Technologies
 
 Python 3.10
 
@@ -176,6 +163,6 @@ Plotly
 
 Git & GitHub
 
-📄 License
+## 📄 License
 
 This project is licensed under the MIT License.
