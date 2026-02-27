@@ -4,17 +4,18 @@ from datetime import datetime
 
 def load_data():
     df = pd.read_excel("data/raw/bikes.xlsx")
-    print(df.columns)
 
     df = df.reset_index().rename(columns={'index': 'id'})
-    df['selling_price'] = pd.to_numeric(df['selling_price'], errors='coerce')
-    df['year'] = pd.to_numeric(df['year'], errors='coerce')
-    df['km_driven'] = pd.to_numeric(df['km_driven'], errors='coerce')
-    df['ex_showroom_price'] = pd.to_numeric(df['ex_showroom_price'], errors='coerce')
 
-    df['age'] = datetime.now().year - df['year']
+    numeric_columns = ['selling_price', 'year', 'km_driven', 'ex_showroom_price']
 
-    # Remove colunas completamente vazias
+    for col in numeric_columns:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    if 'year' in df.columns:
+        df['age'] = datetime.now().year - df['year']
+
     df = df.dropna(axis=1, how='all')
 
     return df
