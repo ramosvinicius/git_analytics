@@ -4,6 +4,7 @@ from datetime import datetime
 
 def load_data():
     df = pd.read_excel("data/raw/bikes.xlsx")
+    print(df.columns)
 
     df = df.reset_index().rename(columns={'index': 'id'})
     df['selling_price'] = pd.to_numeric(df['selling_price'], errors='coerce')
