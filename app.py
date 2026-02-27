@@ -21,7 +21,15 @@ def create_dataframe_section(df):
 
     with col_1:
         st.subheader("📊 Database")
-        st.dataframe(df, height=500)
+
+        # 🔥 Cópia segura para exibição (evita erro do PyArrow)
+        df_display = df.copy()
+
+        for col in df_display.columns:
+            if df_display[col].dtype == "object":
+                df_display[col] = df_display[col].astype(str)
+
+        st.dataframe(df_display, height=500)
 
     with col_2:
         st.subheader("📘 Data Description")
@@ -99,7 +107,6 @@ def create_answers_section(df):
         asw.rd3_question_2(df)
         asw.rd3_question_7(df)
 
-
 # ---------------------------------------------------
 # Função Principal
 # ---------------------------------------------------
@@ -113,6 +120,8 @@ def main():
 
     create_answers_section(df)
 
-
+# ---------------------------------------------------
+# Execução
+# ---------------------------------------------------
 if __name__ == "__main__":
     main()
