@@ -1,8 +1,9 @@
 import pandas as pd
 from datetime import datetime
 
+
 def load_data():
-    df = pd.read_csv("data/raw/bike.csv")
+    df = pd.read_excel("data/raw/bikes.xlsx")
 
     df = df.reset_index().rename(columns={'index': 'id'})
     df['selling_price'] = df['selling_price'].astype(float)
