@@ -1,271 +1,211 @@
-from io import BytesIO
-
-import pandas as pd
-import plotly.express as px
 import streamlit as st
+import seaborn as sns
+import matplotlib.pyplot as plt
+import math
+
+
+# =========================================================
+# FUNÇÃO AUXILIAR
+# =========================================================
+
+def create_km_class(km_driven):
+    return math.ceil(km_driven / 5000)
+
+
+# =========================================================
+# PRIMEIRA RODADA
+# =========================================================
+
+def rd1_question_1(df):
+    st.subheader("1. Quantas motos temos no dataset?")
+    st.metric("Total de Motos", df.shape[0])
+
+
+def rd1_question_2(df):
+    st.subheader("2. Ano da moto mais antiga")
+    st.write(df["year"].min())
+
+
+def rd1_question_3(df):
+    st.subheader("3. Ano da moto mais nova")
+    st.write(df["year"].max())
+
+
+def rd1_question_4(df):
+    st.subheader("4. Valor da moto mais cara")
+    st.write(f"U$ {df['selling_price'].max():,.2f}")
+
+
+def rd1_question_5(df):
+    st.subheader("5. Maior quilometragem")
+    st.write(f"{df['km_driven'].max():,.0f} Km")
+
+
+def rd1_question_6(df):
+    st.subheader("6. Menor quilometragem")
+    st.write(f"{df['km_driven'].min():,.0f} Km")
+
+
+def rd1_question_7(df):
+    st.subheader("7. Maior valor ex_showroom_price")
+    st.write(f"U$ {df['ex_showroom_price'].max():,.2f}")
+
+
+def rd1_question_8(df):
+    st.subheader("8. Menor valor ex_showroom_price")
+    st.write(f"U$ {df['ex_showroom_price'].min():,.2f}")
 
 
 def rd1_question_9(df):
-    df_grouped = df[["id", "seller_type"]].groupby("seller_type")
+    st.subheader("9. Quantidade por tipo de vendedor")
 
-    df_grouped = df_grouped.count().reset_index()
-
-    df_grouped = df_grouped.rename(columns={"id": "count"})
-
-    fig = px.bar(
-        df_grouped,
-        x="seller_type",
-        y="count",
-        labels={"seller_type": "Seller Type", "count": "Quantity"},
-        color="seller_type",
-        text="count",
+    grouped = (
+        df.groupby("seller_type")["seller_type"]
+        .count()
+        .reset_index(name="count")
     )
 
-    fig.update_traces(textposition="outside")
+    st.dataframe(grouped)
 
-    st.plotly_chart(fig, use_container_width=True)
+    fig, ax = plt.subplots()
+    sns.barplot(data=grouped, x="seller_type", y="count", ax=ax)
 
-    return None
+    st.pyplot(fig)
+
+
+def rd1_question_10(df):
+    st.subheader("10. Média de preço")
+    st.write(f"U$ {df['selling_price'].mean():,.2f}")
+
+
+def rd1_question_11(df):
+    st.subheader("11. Média de ano")
+    st.write(round(df["year"].mean()))
+
+
+def rd1_question_12(df):
+    st.subheader("12. Média de quilometragem")
+    st.write(f"{df['km_driven'].mean():,.2f} Km")
 
 
 def rd1_question_13(df):
-    df_grouped = (
-        df.groupby("owner")
-        .agg(qty=pd.NamedAgg("id", "count"))
-        .sort_values("qty")
-        .reset_index()
-    )
-
-    fig = px.bar(
-        df_grouped,
-        x="owner",
-        y="qty",
-        labels={"owner": "Owner Types", "qty": "Quantity"},
-        color="owner",
-        text="qty",
-    )
-
-    fig.update_traces(textposition="outside")
-
-    st.plotly_chart(fig, use_container_width=True)
-
-    return None
+    st.subheader("13. Motos de único dono")
+    total = df[df["owner"] == "1st owner"].shape[0]
+    st.metric("Quantidade", total)
 
 
 def rd1_question_14(df):
-    st.text("As we can see, bikes with high kilometer have cheapier prices")
+    st.subheader("14. Quilometragem vs Preço")
 
-    fig = px.scatter(
-        df,
-        x="km_driven",
-        y="selling_price",
-        labels={"km_driven": "Kilometers", "selling_price": "Selling Price"},
-    )
+    df["km_class"] = df["km_driven"].apply(create_km_class)
 
-    st.plotly_chart(fig, use_container_width=True)
-
-    return None
-
-
-def rd2_question_1(df):
-    df_grouped = df.groupby("owner")
-
-    df_grouped = (
-        df_grouped.agg(
-            avg_price=pd.NamedAgg("selling_price", "mean"),
-            qty=pd.NamedAgg("owner", "count"),
-        )
-        .sort_values("avg_price", ascending=False)
+    grouped = (
+        df.groupby("km_class")["selling_price"]
+        .mean()
         .reset_index()
     )
 
-    df_grouped["avg_price"] = df_grouped["avg_price"].round(2)
+    fig, ax = plt.subplots()
+    sns.barplot(data=grouped, x="km_class", y="selling_price", ax=ax)
 
-    fig = px.bar(
-        df_grouped,
-        x="owner",
-        y="avg_price",
-        labels={"owner": "Owner Types", "avg_price": "Avarage Price"},
-        text="avg_price",
-        color="owner",
-    )
+    st.pyplot(fig)
 
-    fig.update_traces(texttemplate="$ %{text:.2f}", textposition="inside")
 
-    st.plotly_chart(fig, use_container_width=True)
+# =========================================================
+# SEGUNDA RODADA
+# =========================================================
 
-    return None
+def rd2_question_1(df):
+    st.subheader("1. Preço médio por tipo de dono")
+
+    grouped = df.groupby("owner")["selling_price"].mean().reset_index()
+
+    fig, ax = plt.subplots()
+    sns.barplot(data=grouped, x="owner", y="selling_price", ax=ax)
+
+    st.pyplot(fig)
 
 
 def rd2_question_2(df):
-    df_grouped = df[["owner", "km_driven"]].groupby("owner")
+    st.subheader("2. Quilometragem média por tipo de dono")
 
-    df_grouped = (
-        df_grouped.mean().sort_values("km_driven", ascending=False).reset_index()
-    )
+    grouped = df.groupby("owner")["km_driven"].mean().reset_index()
 
-    fig = px.bar(
-        df_grouped,
-        x="owner",
-        y="km_driven",
-        labels={"owner": "Owner Types", "km_driven": "Avarage Price"},
-        text="km_driven",
-        color="owner",
-    )
+    fig, ax = plt.subplots()
+    sns.barplot(data=grouped, x="owner", y="km_driven", ax=ax)
 
-    fig.update_traces(texttemplate="%{text:.2f} Km", textposition="inside")
-
-    st.plotly_chart(fig, use_container_width=True)
-
-    return None
+    st.pyplot(fig)
 
 
 def rd2_question_3(df):
-    df_grouped = df[["owner", "age"]].groupby("owner")
+    st.subheader("3. Idade média por tipo de dono")
 
-    df_grouped = df_grouped.mean().sort_values("age", ascending=False).reset_index()
+    grouped = df.groupby("owner")["age"].mean().reset_index()
 
-    df_grouped["age"] = df_grouped["age"].astype(int)
+    fig, ax = plt.subplots()
+    sns.barplot(data=grouped, x="owner", y="age", ax=ax)
 
-    fig = px.bar(
-        df_grouped,
-        x="owner",
-        y="age",
-        labels={"owner": "Owner Types", "age": "Avarage Price"},
-        text="age",
-        color="owner",
-    )
+    st.pyplot(fig)
 
-    fig.update_traces(texttemplate="%{text:.0f} Years", textposition="inside")
 
-    st.plotly_chart(fig, use_container_width=True)
+def rd2_question_4(df):
+    st.subheader("4. Preço médio por tipo de vendedor")
 
-    return None
+    grouped = df.groupby("seller_type")["selling_price"].mean().reset_index()
+
+    fig, ax = plt.subplots()
+    sns.barplot(data=grouped, x="seller_type", y="selling_price", ax=ax)
+
+    st.pyplot(fig)
 
 
 def rd2_question_7(df):
-    df_grouped = df.loc[:, ["company", "id"]].groupby("company")
+    st.subheader("7. Fabricantes com mais motos")
 
-    df_grouped = df_grouped.count().sort_values("id", ascending=False).reset_index()
-
-    fig = px.bar(
-        df_grouped,
-        x="company",
-        y="id",
-        labels={"company": "Companies", "id": "Quantity"},
-        text="id",
-        color="company",
+    grouped = (
+        df.groupby("company")["company"]
+        .count()
+        .reset_index(name="count")
+        .sort_values("count", ascending=False)
     )
 
-    fig.update_traces(textposition="outside")
+    st.dataframe(grouped.head(10))
 
-    fig.update_xaxes(tickangle=-80)
 
-    st.plotly_chart(fig, use_container_width=True)
-
-    return None
-
+# =========================================================
+# TERCEIRA RODADA
+# =========================================================
 
 def rd3_question_2(df):
-    df_grouped = df[["company", "selling_price"]].groupby("company")
+    st.subheader("2. Fabricante com maior preço médio")
 
-    df_grouped = (
-        df_grouped.agg(
-            avg_price=pd.NamedAgg("selling_price", "mean"),
-            median_price=pd.NamedAgg("selling_price", "median"),
-            std_price=pd.NamedAgg("selling_price", "std"),
-            qty=pd.NamedAgg("company", "count"),
-        )
-        .sort_values("avg_price", ascending=False)
+    grouped = (
+        df.groupby("company")["selling_price"]
+        .mean()
         .reset_index()
+        .sort_values("selling_price", ascending=False)
     )
 
-    fig = px.bar(
-        df_grouped,
-        x="company",
-        y="avg_price",
-        labels={"company": "Companies", "avg_price": "Avarege Price"},
-        text="avg_price",
-        color="company",
-        title="Company Avarege Price",
-    )
-
-    fig.update_traces(texttemplate="$ %{text:.2f}", textposition="outside")
-
-    fig.update_xaxes(tickangle=-80)
-
-    st.plotly_chart(fig, use_container_width=True)
-
-    return None
-
-
-def rd3_question_5(df):
-    df_grouped = df[["id", "selling_price", "company"]].groupby("company")
-
-    df_grouped = df_grouped.agg(
-        max_selling_price=pd.NamedAgg("selling_price", "max"),
-        quantity=pd.NamedAgg("id", "count"),
-    )
-
-    df_grouped = df_grouped.reset_index().sort_values(
-        "max_selling_price", ascending=False
-    )
-
-    fig = px.scatter(
-        df_grouped,
-        x="company",
-        y="max_selling_price",
-        labels={"company": "Company", "max_selling_price": "Selling Price"},
-        text="quantity",
-        color="quantity",
-    )
-
-    fig.update_traces(marker={"size": 20}, textposition="top center")
-
-    fig.update_xaxes(tickangle=-80)
-
-    st.plotly_chart(fig, use_container_width=True)
-
-    return None
+    st.dataframe(grouped.head(10))
 
 
 def rd3_question_7(df):
-    # Filters
-    year = df["year"] >= 2018
-    venda = df["selling_price"] < df["ex_showroom_price"]
-    donos = df["owner"] == "1st owner"
-    vendedor = df["seller_type"] == "Individual"
-    km_rodado = df["km_driven"] <= 40000
+    st.subheader("7. Motos recomendadas para compra")
 
-    # Columns
-    columns = ["id", "name", "selling_price", "km_driven", "year"]
-
-    # Data Selection
     df_selected = df.loc[
-        year & km_rodado & donos & vendedor & venda, columns
+        (df["age"] <= 3) &
+        (df["km_driven"] <= 40000) &
+        (df["owner"] == "1st owner") &
+        (df["seller_type"] == "Individual") &
+        (df["selling_price"] < df["ex_showroom_price"]),
+        ["name", "selling_price", "km_driven", "year"]
     ].sort_values("selling_price", ascending=False)
 
     st.dataframe(df_selected)
 
-    df_xlsx = to_excel(df_selected)
-
     st.download_button(
-        label="📥 Download Buyinbg Suggestions",
-        data=df_xlsx,
-        file_name="buing_suggestions.xlsx",
+        label="📥 Baixar Relatório CSV",
+        data=df_selected.to_csv(index=False),
+        file_name="bikes_selected.csv",
+        mime="text/csv"
     )
-
-    return None
-
-
-def to_excel(df):
-    output = BytesIO()
-
-    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-        df.to_excel(writer, index=False, sheet_name="Sheet1")
-        worksheet = writer.sheets["Sheet1"]
-        worksheet.set_column("A:A", None)
-
-    processed_data = output.getvalue()
-    return processed_data
-

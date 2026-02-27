@@ -1,93 +1,118 @@
-import pandas as pd
 import streamlit as st
-
 import answers as asw
 from extraction import load_data
 
+# ---------------------------------------------------
+# Configuração da página
+# ---------------------------------------------------
+st.set_page_config(
+    page_title="Kobe Bikes - Business Analysis",
+    layout="wide"
+)
 
-st.set_page_config(layout="wide")
-
-
+# ---------------------------------------------------
+# Seção de visualização do Dataset
+# ---------------------------------------------------
 def create_dataframe_section(df):
-    st.title("Sections - Database Description")
+
+    st.title("🏍️ Kobe Bikes - Dataset Overview")
 
     col_1, col_2 = st.columns(2)
 
-    col_1.header("Database")
-    col_1.dataframe(df, height=530)
+    with col_1:
+        st.subheader("📊 Database")
+        st.dataframe(df, height=500)
 
-    col_2.header("Data Description")
+    with col_2:
+        st.subheader("📘 Data Description")
 
-    data_description = """
-                        | Coluna | Descrição |
-                        | :----- | --------: |
-                        | ID | Identificador da linha/registro |
-                        | name | Fabricante e Modelo da Moto |
-                        | selling_price | Preço de Venda |
-                        | year | Ano de Fabricação da Moto |
-                        | seller_type | Tipo de Vendedor - Se é vendedor pessoal ou revendedor |
-                        | owner | Se é primeiro, segundo, terceiro ou quarto dono da moto |
-                        | km_driven | Quantidade de Quilometros percorrido pela moto |
-                        | ex_showroom_price | Preço da motocicleta sem as taxas de seguro e registro |
-                        | age | Quantidade de anos em que a moto está em uso |
-                        | km_class | Classificação das motos conforme a quilometragem percorrida |
-                        | km_per_year | Quantidade de Quilometros percorridos a cada ano |
-                        | km_per_month | Quantidade de Quilometros percorridos por mês |
-                        | company | Fabricanete da Motocicleta |
-    """
+        st.markdown("""
+        | Coluna | Descrição |
+        |:-------|:-----------|
+        | id | Identificador da linha |
+        | name | Fabricante e Modelo |
+        | selling_price | Preço de Venda |
+        | year | Ano de Fabricação |
+        | seller_type | Individual ou Dealer |
+        | owner | Número de donos |
+        | km_driven | Quilometragem total |
+        | ex_showroom_price | Preço sem taxas |
+        | age | Idade da moto |
+        | km_class | Classe por km |
+        | km_per_year | Km por ano |
+        | km_per_month | Km por mês |
+        | company | Fabricante |
+        """)
 
-    col_2.markdown(data_description)
-
-
+# ---------------------------------------------------
+# Seção das Perguntas com 3 Abas
+# ---------------------------------------------------
 def create_answers_section(df):
-    st.title("Main Questions Answers")
 
-    st.header("First Round")
-    st.subheader(
-        "How many bikes are being sold by their owners and how many bikes are being sold by distributors?"
-    )
-    asw.rd1_question_9(df)
+    st.title("📈 Business Questions")
 
-    st.subheader("How many bikes are being sold are bikes from a unique owner?")
-    asw.rd1_question_13(df)
+    tab1, tab2, tab3 = st.tabs([
+        "🔹 Primeira Rodada",
+        "🔹 Segunda Rodada",
+        "🔹 Terceira Rodada"
+    ])
 
-    st.subheader(
-        "Are high kilometer bikes more expensive than bikes with lower kilometer?"
-    )
-    asw.rd1_question_14(df)
+    # ====================================================
+    # PRIMEIRA RODADA
+    # ====================================================
+    with tab1:
+        st.header("Primeira Rodada")
 
-    st.subheader(
-        "Are the bikes with a unique owner more expense on avarege than the other bikes?"
-    )
-    asw.rd2_question_1(df)
+        asw.rd1_question_1(df)
+        asw.rd1_question_2(df)
+        asw.rd1_question_3(df)
+        asw.rd1_question_4(df)
+        asw.rd1_question_5(df)
+        asw.rd1_question_6(df)
+        asw.rd1_question_7(df)
+        asw.rd1_question_8(df)
+        asw.rd1_question_9(df)
+        asw.rd1_question_10(df)
+        asw.rd1_question_11(df)
+        asw.rd1_question_12(df)
+        asw.rd1_question_13(df)
+        asw.rd1_question_14(df)
 
-    st.subheader(
-        "Are the bikes that have more owners also the bikes with more kilometers traveled on avarege?"
-    )
-    asw.rd2_question_2(df)
+    # ====================================================
+    # SEGUNDA RODADA
+    # ====================================================
+    with tab2:
+        st.header("Segunda Rodada")
 
-    st.subheader("Which company has the most bikes registered?")
-    asw.rd2_question_7(df)
+        asw.rd2_question_1(df)
+        asw.rd2_question_2(df)
+        asw.rd2_question_3(df)
+        asw.rd2_question_4(df)
+        asw.rd2_question_7(df)
 
-    st.subheader("Which company has the most expensive bikes on avarege?")
-    asw.rd3_question_2(df)
+    # ====================================================
+    # TERCEIRA RODADA
+    # ====================================================
+    with tab3:
+        st.header("Terceira Rodada")
 
-    st.subheader(
-        "Are the company that has the most expensive bikes registered also the company with the most bikes registered?"
-    )
-    asw.rd3_question_5(df)
-
-    st.subheader("Which bikes are good for buying?")
-    asw.rd3_question_7(df)
+        asw.rd3_question_2(df)
+        asw.rd3_question_7(df)
 
 
-def create_main_layout():
+# ---------------------------------------------------
+# Função Principal
+# ---------------------------------------------------
+def main():
+
     df = load_data()
 
     create_dataframe_section(df)
+
+    st.divider()
 
     create_answers_section(df)
 
 
 if __name__ == "__main__":
-    create_main_layout()
+    main()
