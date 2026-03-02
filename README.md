@@ -13,7 +13,7 @@ O projeto serve como uma  para mostrar, na prática, como o Git pode ser utiliza
 
 O dashboard desenvolvido neste projeto pode ser acessado no link abaixo:
 
-👉 **[Git Analytics Dashboard](https://git-analytic.streamlit.app/)**
+👉 **[Kobe Bikes Analytics Dashboard](https://git-analytic.streamlit.app/)**
 
 ---
 
@@ -135,7 +135,7 @@ The project serves as a base/skeleton to show how Git can be applied throughout 
 
 You can access the dashboard here: https://github.com/ramosvinicius
 
-👉 Git and Analytics Dashboard
+👉 **[Kobe Bikes Analytics Dashboard](https://git-analytic.streamlit.app/)**
 
 ## 🎯 Project Purpose
 
